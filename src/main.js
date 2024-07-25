@@ -8,9 +8,9 @@ const settingsSchema = [
   {
     key: "hotkey",
     type: "string",
-    title: "Toggle Typewriter Mode Hotkey (Default hotkey: mod + y)",
-    description: "Set a hotkey to toggle typewriter mode",
-    default: "mod+y",
+    title: "Keyboard Shortcut",
+    description: "Default (alt + mod + t)",
+    default: "alt+mod+t",
   },
 ];
 
@@ -43,13 +43,9 @@ const pluginState = {
     if (pluginState.previousBlockUuid != currentBlockId) {
       const now = new Date();
       const options = {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
+        hour12: false,
       };
 
       const currentBlockContent = cursor.content;
@@ -58,7 +54,7 @@ const pluginState = {
       }
       const timestamp = new Intl.DateTimeFormat("en-US", options).format(now);
       const toUpdateCursor =
-        "**" + timestamp + "**" + "  " + currentBlockContent;
+        timestamp + "  " + currentBlockContent;
 
       await logseq.Editor.updateBlock(currentBlockId, toUpdateCursor);
       pluginState.previousBlockUuid = currentBlockId;
@@ -76,8 +72,8 @@ const pluginState = {
   sendMessage() {
     this.istimeflowEnabled = !this.istimeflowEnabled;
     const message = this.istimeflowEnabled
-      ? "timeflow Mode ENABLED"
-      : "timeflow Mode DISABLED";
+      ? "timestamp block ENABLED"
+      : "timestamp block DISABLED";
     logseq.UI.showMsg(message);
   },
 };
